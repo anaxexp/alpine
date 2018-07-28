@@ -1,0 +1,17 @@
+language: bash
+
+services:
+  - docker
+
+env:
+  matrix:
+    - ALPINE_VER=3.7 TAGS=3.7,3,latest
+    - ALPINE_VER=3.6 TAGS=3.6
+    - ALPINE_VER=3.5 TAGS=3.5
+    - ALPINE_VER=3.4 TAGS=3.4
+
+script:
+  - make && make test
+
+after_success:
+  - . "${TRAVIS_BUILD_DIR}/release.sh"
