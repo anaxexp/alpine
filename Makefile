@@ -3,7 +3,7 @@
 ALPINE_VER ?= 3.7
 TAG ?= $(ALPINE_VER)
 
-REPO = anaxexperience/alpine
+REPO = anaxexp/alpine
 NAME = alpine-$(ALPINE_VER)
 
 ifneq ($(STABILITY_TAG),)

@@ -9,7 +9,7 @@ This is a basic alpine image used in anaxexp's docker images
 
 ## Docker Images
 
-❗For better reliability we release images with stability tags (`anaxexp/alpine:3.7-X.X.X`) which correspond to [git tags](https://github.com/anaxexp/alpine/releases). We strongly recommend using images only with stability tags. 
+❗For better reliability we release images with stability tags (`anaxexperience/alpine:3.7-X.X.X`) which correspond to [git tags](https://github.com/anaxexp/alpine/releases). We strongly recommend using images only with stability tags. 
 
 About images:
 
