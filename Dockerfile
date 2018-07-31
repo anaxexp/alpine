@@ -20,10 +20,10 @@ RUN set -xe; \
         \
     rm -rf /var/cache/apk/*
     
-COPY ./bin/compare_semver /usr/local/bin/
-COPY ./bin/exec_init_scripts /usr/local/bin/
-COPY ./bin/gen_ssh_keys /usr/local/bin/
-COPY ./bin/gen_ssl_certs /usr/local/bin/
-COPY ./bin/get_archive /usr/local/bin/
-COPY ./bin/gpg_verify /usr/local/bin/
-COPY ./bin/wait_for /usr/local/bin/
+COPY bin/compare_semver /usr/local/bin/compare_semver
+COPY bin/exec_init_scripts /usr/local/bin/exec_init_scripts
+COPY bin/gen_ssh_keys /usr/local/bin/gen_ssh_keys
+COPY bin/gen_ssl_certs /usr/local/bin/gen_ssl_certs
+COPY bin/get_archive /usr/local/bin/get_archive
+COPY bin/gpg_verify /usr/local/bin/gpg_verify
+COPY bin/wait_for /usr/local/bin/wait_for
