@@ -26,13 +26,13 @@ RUN set -xe; \
         gotpl_url="https://github.com/anaxexp/gotpl/releases/download/${GOTPL_VER}/gotpl-alpine-linux-amd64-${GOTPL_VER}.tar.gz"; \
         wget -qO- "${gotpl_url}" | tar xz -C /usr/local/bin; \
         \
-        chmod +x /usr/local/bin/compare_semver \
-        chmod +x /usr/local/bin/exec_init_scripts \
-        chmod +x /usr/local/bin/gen_ssh_keys \
-        chmod +x /usr/local/bin/gen_ssl_certs \
-        chmod +x /usr/local/bin/get_archive \
-        chmod +x /usr/local/bin/gpg_verify \
-        chmod +x /usr/local/bin/wait_for \
+        chmod +x /usr/local/bin/compare_semver; \
+        chmod +x /usr/local/bin/exec_init_scripts; \
+        chmod +x /usr/local/bin/gen_ssh_keys; \
+        chmod +x /usr/local/bin/gen_ssl_certs; \
+        chmod +x /usr/local/bin/get_archive; \
+        chmod +x /usr/local/bin/gpg_verify; \
+        chmod +x /usr/local/bin/wait_for; \
         \
     rm -rf /var/cache/apk/*
     
