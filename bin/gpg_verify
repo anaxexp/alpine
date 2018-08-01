@@ -37,6 +37,7 @@ gpg --batch --verify "${signature}" "${file}"
 if [[ -z "${GNUPGHOME}" ]]; then
     rm -rf "${GNUPGHOME}"
 fi
+
 if [[ -z "${signature}" ]]; then
     rm -rf "${signature}"
 fi
