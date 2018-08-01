@@ -4,8 +4,6 @@ services:
   - docker
 
 env:
-  global:
-    - STABILITY_TAG=2.0.1
   matrix:
     - ALPINE_VER=3.8 TAGS=3.8,3,latest
     - ALPINE_VER=3.7 TAGS=3.7
