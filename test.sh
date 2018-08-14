@@ -6,7 +6,7 @@ if [[ -n "${DEBUG}" ]]; then
     set -x
 fi
 
-s3url="https://s3.amazonaws.com/wodby-sample-files/archives/export"
+s3url="https://s3-us-west-1.amazonaws.com/anaxexp-sample-files/archives/export"
 
 run() {
     docker run --rm -e DEBUG "${IMAGE}" "${@}"
