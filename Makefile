@@ -27,6 +27,7 @@ endif
 
 default: build
 
+
 build:
 	docker build -t $(REPO):$(TAG) \
 		--build-arg ALPINE_VER=$(ALPINE_VER) \
