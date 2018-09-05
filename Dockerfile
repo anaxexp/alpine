@@ -10,6 +10,7 @@ RUN set -xe; \
     \
     apk add --update --no-cache \
         bash \
+        bc \
         ca-certificates \
         curl \
         gzip \
@@ -26,4 +27,5 @@ RUN set -xe; \
     \
     rm -rf /var/cache/apk/*
 
+    
 COPY bin /usr/local/bin/
