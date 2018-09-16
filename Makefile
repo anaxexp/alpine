@@ -58,16 +58,15 @@ ifneq ($(ALPINE_DEV),)
 endif
 
 #.PHONY: build test push shell run start stop logs clean release
-
+#docker build -t $(REPO):$(TAG) \
+#		--build-arg ALPINE_VER=$(ALPINE_VER) \
+#	--build-arg ALPINE_DEV=$(ALPINE_DEV) \
+#	./
 ## Display this help message
 help:
 	@awk '/^##.*$$/,/[a-zA-Z_-]+:/' $(MAKEFILE_LIST) | awk '!(NR%2){print $$0p}{p=$$0}' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' | sort
 
 build: pre-build docker-build post-build
-	#docker build -t $(REPO):$(TAG) \
-    #		--build-arg ALPINE_VER=$(ALPINE_VER) \
-	#	--build-arg ALPINE_DEV=$(ALPINE_DEV) \
-	#	./
 
 pre-build:
 
@@ -125,7 +124,7 @@ do-push:
 		docker push $(IMAGE):latest
 
 test:
-	IMAGE=$(IMAGE):$(VERSION) ./test.sh
+	IMAGE=$(REPO):$(VERSION) ./test.sh
 
 shell:
 	docker run --rm --name $(NAME) -i -t $(PORTS) $(VOLUMES) $(ENV) $(IMAGE):$(VERSION) /bin/bash
