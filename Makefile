@@ -26,6 +26,7 @@ TAG := branch-$(shell basename $(GIT_BRANCH))
 IMAGE := $(NAMESPACE)/alpine
 
 ALPINE_VER ?= 3.8
+ALPINE_DEV ?=0
 
 REPO = $(DOCKER_REGISTRY_HOST)/$(IMAGE)
 NAME = alpine-$(ALPINE_VER)
@@ -33,8 +34,9 @@ NAME = alpine-$(ALPINE_VER)
 SHELL=/bin/bash
 DOCKER_BUILD_CONTEXT=.
 DOCKER_FILE_PATH=Dockerfile
-DOCKER_BUILD_ARGS ?=""
-ALPINE_DEV ?=""
+DOCKER_BUILD_ARGS ?=--build-arg ALPINE_VER=$(ALPINE_VER) \
+	                --build-arg ALPINE_DEV=$(ALPINE_DEV) \
+
 .PHONY: *
 
 ifneq ($(STABILITY_TAG),)
@@ -176,16 +178,15 @@ check-release: .release
 ## Print environment for build debugging
 debug:
 	@echo WORKSPACE=$(WORKSPACE)
+	@echo MAKEPATH=$(MAKEPATH)
+	@echo PWD=$(PWD)
+	@echo NAMESPACE=$(NAMESPACE)
+	@echo IMAGE=$(IMAGE)
 	@echo GIT_COMMIT=$(GIT_COMMIT)
 	@echo GIT_BRANCH=$(GIT_BRANCH)
 	@echo RELEASE_SUPPORT=$(RELEASE_SUPPORT)
 	@echo VERSION=$(VERSION)
-	@echo TAGS=$(TAGS)
-	@echo MAKEPATH=$(MAKEPATH)
-	@echo PWD=$(PWD)
-	@echo NAMESPACE=$(NAMESPACE)
-	@echo tag=$(tag)
-	@echo IMAGE=$(IMAGE)
+	@echo TAG=$(TAG)
 
 
 version: ## Output the current version
