@@ -1,0 +1,19 @@
+{
+  "name": "alpine",
+  "version": "2.2.1",
+  "description": "[![Build Status](https://travis-ci.org/anaxexp/alpine.svg?branch=master)](https://travis-ci.org/anaxexp/alpine) [![Docker Pulls](https://img.shields.io/docker/pulls/anaxexp/alpine.svg)](https://hub.docker.com/r/anaxexp/alpine) [![Docker Stars](https://img.shields.io/docker/stars/anaxexp/alpine.svg)](https://hub.docker.com/r/anaxexp/alpine) [![Docker Layers](https://images.microbadger.com/badges/image/anaxexp/alpine.svg)](https://microbadger.com/images/anaxexp/alpine)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anaxexp/alpine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anaxexp/alpine/issues"
+  },
+  "homepage": "https://github.com/anaxexp/alpine#readme"
+}

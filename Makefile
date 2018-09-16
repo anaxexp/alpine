@@ -63,6 +63,12 @@ endif
 help:
 	@awk '/^##.*$$/,/[a-zA-Z_-]+:/' $(MAKEFILE_LIST) | awk '!(NR%2){print $$0p}{p=$$0}' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' | sort
 
+build: pre-build docker-build post-build
+	#docker build -t $(REPO):$(TAG) \
+    #		--build-arg ALPINE_VER=$(ALPINE_VER) \
+	#	--build-arg ALPINE_DEV=$(ALPINE_DEV) \
+	#	./
+
 pre-build:
 
 
@@ -73,6 +79,21 @@ pre-push:
 
 
 post-push:
+
+run:
+	docker run --rm --name $(NAME) -e DEBUG=1 $(PORTS) $(VOLUMES) $(ENV) $(IMAGE):$(VERSION) $(CMD)
+
+start:
+	docker run -d --name $(NAME) $(PORTS) $(VOLUMES) $(ENV) $(IMAGE):$(VERSION)
+
+stop:
+	docker stop $(NAME)
+
+logs:
+	docker logs $(NAME)
+
+clean:
+	-docker rm -f $(NAME)
 
 docker-build: .release
 	docker build $(DOCKER_BUILD_ARGS) -t $(IMAGE):$(VERSION) $(DOCKER_BUILD_CONTEXT) -f $(DOCKER_FILE_PATH)
@@ -94,38 +115,22 @@ docker-build: .release
 
 
 release: check-status check-release build push
+#release: build push
 
-build:
-	docker build -t $(REPO):$(TAG) \
-		--build-arg ALPINE_VER=$(ALPINE_VER) \
-		--build-arg ALPINE_DEV=$(ALPINE_DEV) \
-		./
+#docker push $(REPO):$(TAG)
+push: pre-push do-push post-push
+
+do-push:
+        docker push $(IMAGE):$(VERSION)
+		docker push $(IMAGE):latest
 
 test:
-	IMAGE=$(REPO):$(TAG) ./test.sh
-
-push:
-	docker push $(REPO):$(TAG)
+	IMAGE=$(IMAGE):$(VERSION) ./test.sh
 
 shell:
-	docker run --rm --name $(NAME) -i -t $(PORTS) $(VOLUMES) $(ENV) $(REPO):$(TAG) /bin/bash
+	docker run --rm --name $(NAME) -i -t $(PORTS) $(VOLUMES) $(ENV) $(IMAGE):$(VERSION) /bin/bash
 
-run:
-	docker run --rm --name $(NAME) -e DEBUG=1 $(PORTS) $(VOLUMES) $(ENV) $(REPO):$(TAG) $(CMD)
-
-start:
-	docker run -d --name $(NAME) $(PORTS) $(VOLUMES) $(ENV) $(REPO):$(TAG)
-
-stop:
-	docker stop $(NAME)
-
-logs:
-	docker logs $(NAME)
-
-clean:
-	-docker rm -f $(NAME)
-
-release: build push
+snapshot: build push
 
 showver: .release
 	@. $(RELEASE_SUPPORT); getVersion
