@@ -22,7 +22,7 @@ WORKSPACE ?= $(shell pwd)
 DOCKER_REGISTRY_HOST ?=docker.io
 
 NAMESPACE ?= anaxexp
-TAG := branch-$(shell basename $(GIT_BRANCH))
+#TAG := branch-$(shell basename $(GIT_BRANCH))
 IMAGE := $(NAMESPACE)/alpine
 
 ALPINE_VER ?= 3.8
