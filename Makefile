@@ -4,11 +4,19 @@ MAKEFLAGS += --warn-undefined-variables
 .DEFAULT_GOAL := build
 
 USERNAME ?=$(USER)
-NAME=$(shell basename $(CURDIR))
+NAMESPACE ?= anaxexp
 
+DOCKER_REGISTRY_HOST ?=docker.io
+ALPINE_VER ?= 3.8
+ALPINE_DEV ?=0
+NAME=$(shell basename $(CURDIR))-$(ALPINE_VER)
+
+#NAME = alpine-$(ALPINE_VER)
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
-DOCKER_IMAGE=$(DOCKER_REGISTRY_HOST)/$(USERNAME)/$(NAME)
-
+IMAGE=$(DOCKER_REGISTRY_HOST)/$(NAMESPACE)/$(NAME)
+REPO=$(IMAGE)
+#TAG := branch-$(shell basename $(GIT_BRANCH))
+#IMAGE := $(NAMESPACE)/alpine
 VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
 TAG=$(shell . $(RELEASE_SUPPORT); getTag)
 # Set dir of Makefile to a variable to use later
@@ -19,17 +27,8 @@ PWD := $(dir $(MAKEPATH))
 GIT_COMMIT ?= $(shell git rev-parse --short HEAD)
 GIT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 WORKSPACE ?= $(shell pwd)
-DOCKER_REGISTRY_HOST ?=docker.io
 
-NAMESPACE ?= anaxexp
-#TAG := branch-$(shell basename $(GIT_BRANCH))
-IMAGE := $(NAMESPACE)/alpine
 
-ALPINE_VER ?= 3.8
-ALPINE_DEV ?=0
-
-REPO = $(DOCKER_REGISTRY_HOST)/$(IMAGE)
-NAME = alpine-$(ALPINE_VER)
 
 SHELL=/bin/bash
 DOCKER_BUILD_CONTEXT=.
