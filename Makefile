@@ -10,7 +10,7 @@ RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.mak
 DOCKER_IMAGE=$(DOCKER_REGISTRY_HOST)/$(USERNAME)/$(NAME)
 
 VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
-TAGS=$(shell . $(RELEASE_SUPPORT); getTag)
+TAG=$(shell . $(RELEASE_SUPPORT); getTag)
 # Set dir of Makefile to a variable to use later
 MAKEPATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 PWD := $(dir $(MAKEPATH))
@@ -22,18 +22,19 @@ WORKSPACE ?= $(shell pwd)
 DOCKER_REGISTRY_HOST ?=docker.io
 
 NAMESPACE ?= anaxexp
-tag := branch-$(shell basename $(GIT_BRANCH))
-image := $(NAMESPACE)/alpine
+TAG := branch-$(shell basename $(GIT_BRANCH))
+IMAGE := $(NAMESPACE)/alpine
 
 ALPINE_VER ?= 3.8
 
-REPO = $(DOCKER_REGISTRY_HOST)/$(image)
+REPO = $(DOCKER_REGISTRY_HOST)/$(IMAGE)
 NAME = alpine-$(ALPINE_VER)
 
 SHELL=/bin/bash
 DOCKER_BUILD_CONTEXT=.
 DOCKER_FILE_PATH=Dockerfile
-
+DOCKER_BUILD_ARGS ?=""
+ALPINE_DEV ?=""
 .PHONY: *
 
 ifneq ($(STABILITY_TAG),)
@@ -178,14 +179,13 @@ debug:
 	@echo GIT_COMMIT=$(GIT_COMMIT)
 	@echo GIT_BRANCH=$(GIT_BRANCH)
 	@echo RELEASE_SUPPORT=$(RELEASE_SUPPORT)
-	@echo DOCKER_IMAGE=$(DOCKER_IMAGE)
 	@echo VERSION=$(VERSION)
 	@echo TAGS=$(TAGS)
 	@echo MAKEPATH=$(MAKEPATH)
 	@echo PWD=$(PWD)
 	@echo NAMESPACE=$(NAMESPACE)
 	@echo tag=$(tag)
-	@echo image=$(image)
+	@echo IMAGE=$(IMAGE)
 
 
 version: ## Output the current version
