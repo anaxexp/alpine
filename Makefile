@@ -13,8 +13,8 @@ NAME=$(shell basename $(CURDIR))-$(ALPINE_VER)
 
 #NAME = alpine-$(ALPINE_VER)
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
-IMAGE=$(DOCKER_REGISTRY_HOST)/$(NAMESPACE)/$(NAME)
-REPO=$(IMAGE)
+REPO=$(DOCKER_REGISTRY_HOST)/$(NAMESPACE)/$(NAME)
+IMAGE=$(REPO)
 #TAG := branch-$(shell basename $(GIT_BRANCH))
 #IMAGE := $(NAMESPACE)/alpine
 VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
@@ -111,11 +111,8 @@ docker-build: .release
 	@echo INFO: .release created
 	@cat .release
 
-
 release: check-status check-release build push
-#release: build push
 
-#docker push $(REPO):$(TAG)
 push: pre-push do-push post-push
 
 do-push:
