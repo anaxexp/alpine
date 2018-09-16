@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.env.linux": {
+        "ALPINE_VER": "3.8"
+    }
+}
