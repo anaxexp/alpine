@@ -33,8 +33,8 @@ WORKSPACE ?= $(shell pwd)
 SHELL=/bin/bash
 DOCKER_BUILD_CONTEXT=.
 DOCKER_FILE_PATH=Dockerfile
-DOCKER_BUILD_ARGS ?=--build-arg ALPINE_VER=$(ALPINE_VER) \
-	                --build-arg ALPINE_DEV=$(ALPINE_DEV) \
+DOCKER_BUILD_ARGS=--build-arg ALPINE_VER=$(ALPINE_VER) \
+	              --build-arg ALPINE_DEV=$(ALPINE_DEV) \
 
 .PHONY: *
 
