@@ -3,30 +3,32 @@
 MAKEFLAGS += --warn-undefined-variables
 .DEFAULT_GOAL := build
 
+MAKEPATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+PWD := $(dir $(MAKEPATH))
+WORKSPACE ?= $(shell pwd)
+
+RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
+# we get these from CI environment if available, otherwise from git
+GIT_COMMIT ?= $(shell git rev-parse --short HEAD)
+GIT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
+
 USERNAME ?=$(USER)
 NAMESPACE ?= anaxexp
 
 DOCKER_REGISTRY ?=hub.docker.io
 ALPINE_VER ?= 3.8
-ALPINE_DEV ?=0
+ALPINE_DEV ?=
 NAME=$(shell basename $(CURDIR))-$(ALPINE_VER)
 
-#NAME = alpine-$(ALPINE_VER)
-RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
+
 REPO=$(DOCKER_REGISTRY)/$(NAMESPACE)/$(NAME)
 IMAGE=$(REPO)
-#TAG := branch-$(shell basename $(GIT_BRANCH))
+tag := branch-$(shell basename $(GIT_BRANCH))
 #IMAGE := $(NAMESPACE)/alpine
 VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
-TAG=$(shell . $(RELEASE_SUPPORT); getTag)
+TAG=$(shell . $(RELEASE_SUPPORT); getTag $(tag))
 # Set dir of Makefile to a variable to use later
-MAKEPATH := $(abspath $(lastword $(MAKEFILE_LIST)))
-PWD := $(dir $(MAKEPATH))
 
-# we get these from CI environment if available, otherwise from git
-GIT_COMMIT ?= $(shell git rev-parse --short HEAD)
-GIT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
-WORKSPACE ?= $(shell pwd)
 
 
 
@@ -94,7 +96,7 @@ clean:
 	-docker rm -f $(NAME)
 
 docker-build: .release
-	docker build $(DOCKER_BUILD_ARGS) -t $(IMAGE):$(VERSION) $(DOCKER_BUILD_CONTEXT) -f $(DOCKER_FILE_PATH)
+	docker build $(DOCKER_BUILD_ARGS) -t $(IMAGE):$(VERSION)-$(TAG) $(DOCKER_BUILD_CONTEXT) -f $(DOCKER_FILE_PATH)
 	@DOCKER_MAJOR=$(shell docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f1) ; \
 	DOCKER_MINOR=$(shell docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f2) ; \
 	if [ $$DOCKER_MAJOR -eq 1 ] && [ $$DOCKER_MINOR -lt 10 ] ; then \
@@ -129,6 +131,7 @@ snapshot: build push
 
 showver: .release
 	@. $(RELEASE_SUPPORT); getVersion
+	@. $(RELEASE_SUPPORT); getTag $(VERSION)
 
 tag-patch-release: VERSION := $(shell . $(RELEASE_SUPPORT); nextPatchLevel)
 tag-patch-release: .release tag 
@@ -177,17 +180,17 @@ check-release: .release
 
 ## Print environment for build debugging
 debug:
+	@echo PWD=$(PWD)
 	@echo WORKSPACE=$(WORKSPACE)
 	@echo MAKEPATH=$(MAKEPATH)
-	@echo PWD=$(PWD)
+	@echo RELEASE_SUPPORT=$(RELEASE_SUPPORT)
 	@echo DOCKER_REGISTRY=$(DOCKER_REGISTRY)
-	@echo REPO=$(REPO)
 	@echo NAMESPACE=$(NAMESPACE)
 	@echo NAME=$(NAME)
 	@echo IMAGE=$(IMAGE)
+	@echo REPO=$(REPO)
 	@echo GIT_COMMIT=$(GIT_COMMIT)
 	@echo GIT_BRANCH=$(GIT_BRANCH)
-	@echo RELEASE_SUPPORT=$(RELEASE_SUPPORT)
 	@echo VERSION=$(VERSION)
 	@echo TAG=$(TAG)
 
