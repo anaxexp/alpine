@@ -12,6 +12,6 @@ if [[ "${TRAVIS_PULL_REQUEST}" == "false" && ("${TRAVIS_BRANCH}" == "master"  ||
     IFS=',' read -ra tags <<< "${TAGS}"
 
     for tag in "${tags[@]}"; do
-        make release TAG="${tag}";
+        make release VERSION="${tag}";
     done
 fi
