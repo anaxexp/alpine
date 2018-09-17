@@ -120,7 +120,7 @@ do-push:
 		docker push $(IMAGE):latest
 
 test:
-	IMAGE=$(REPO):$(VERSION) ./test.sh
+	IMAGE=$(IMAGE):$(VERSION) ./test.sh
 
 shell:
 	docker run --rm --name $(NAME) -i -t $(PORTS) $(VOLUMES) $(ENV) $(IMAGE):$(VERSION) /bin/bash
