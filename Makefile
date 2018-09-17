@@ -6,14 +6,14 @@ MAKEFLAGS += --warn-undefined-variables
 USERNAME ?=$(USER)
 NAMESPACE ?= anaxexp
 
-DOCKER_REGISTRY_HOST ?=docker.io
+DOCKER_REGISTRY ?=hub.docker.io
 ALPINE_VER ?= 3.8
 ALPINE_DEV ?=0
 NAME=$(shell basename $(CURDIR))-$(ALPINE_VER)
 
 #NAME = alpine-$(ALPINE_VER)
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
-REPO=$(DOCKER_REGISTRY_HOST)/$(NAMESPACE)/$(NAME)
+REPO=$(DOCKER_REGISTRY)/$(NAMESPACE)/$(NAME)
 IMAGE=$(REPO)
 #TAG := branch-$(shell basename $(GIT_BRANCH))
 #IMAGE := $(NAMESPACE)/alpine
@@ -180,7 +180,10 @@ debug:
 	@echo WORKSPACE=$(WORKSPACE)
 	@echo MAKEPATH=$(MAKEPATH)
 	@echo PWD=$(PWD)
+	@echo DOCKER_REGISTRY=$(DOCKER_REGISTRY)
+	@echo REPO=$(REPO)
 	@echo NAMESPACE=$(NAMESPACE)
+	@echo NAME=$(NAME)
 	@echo IMAGE=$(IMAGE)
 	@echo GIT_COMMIT=$(GIT_COMMIT)
 	@echo GIT_BRANCH=$(GIT_BRANCH)
