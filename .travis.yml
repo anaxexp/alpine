@@ -11,6 +11,7 @@ env:
     - ALPINE_VER=3.5 TAGS=3.5
     - ALPINE_VER=3.4 TAGS=3.4
     - ALPINE_VER=3.8 TAGS=3.8-dev,3-dev,dev ALPINE_DEV=1
+    - ALPINE_VER=3.21 TAGS=3.21-dev ALPINE_DEV=1
 
 script:
   - make && make test

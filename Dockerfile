@@ -4,7 +4,7 @@ FROM alpine:${ALPINE_VER}
 
 ARG ALPINE_DEV
 
-ENV GOTPL_VER 0.1.5
+ENV GOTPL_VER=0.1.5
 
 RUN set -xe; \
     \

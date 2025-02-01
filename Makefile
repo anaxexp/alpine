@@ -16,7 +16,7 @@ USERNAME ?=$(USER)
 NAMESPACE ?= anaxexp
 
 DOCKER_REGISTRY ?=hub.docker.io
-ALPINE_VER ?= 3.8
+ALPINE_VER ?= 3.21.2
 ALPINE_DEV ?=
 NAME=$(shell basename $(CURDIR))-$(ALPINE_VER)
 
